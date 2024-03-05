@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dda1be3l3tua4"]
+[gd_scene load_steps=13 format=3 uid="uid://dda1be3l3tua4"]
 
 [ext_resource type="Texture2D" uid="uid://udykbq4x7h5n" path="res://Assets/Legacy-Fantasy - High Forest 2.3/Buildings.png" id="1_qio7g"]
 [ext_resource type="PackedScene" uid="uid://cuswjqyhde34x" path="res://Scenes/Player/player.tscn" id="2_i4f1p"]
+[ext_resource type="Shader" path="res://Scenes/Shaders/grass.gdshader" id="3_1dwqi"]
+[ext_resource type="Script" path="res://Scenes/Worlds/paused_ui.gd" id="3_uaeot"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cdcrr"]
 texture = ExtResource("1_qio7g")
@@ -1181,6 +1183,123 @@ terrain_set_0/terrain_0/name = "Tile 1"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_cdcrr")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3j3qn"]
+shader = ExtResource("3_1dwqi")
+shader_parameter/lod = 3.0
+
+[sub_resource type="Animation" id="Animation_ut56u"]
+resource_name = "enter"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-120, 274), Vector2(60, 274)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_sblsl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(60, 274)]
+}
+
+[sub_resource type="Animation" id="Animation_8a3fv"]
+resource_name = "exit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(60, 274), Vector2(-120, 274)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"hide"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_vdktu"]
+resource_name = "back"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(60, 274), Vector2(-120, 274)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"change_sence"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e6b2b"]
+_data = {
+"RESET": SubResource("Animation_sblsl"),
+"back": SubResource("Animation_vdktu"),
+"enter": SubResource("Animation_ut56u"),
+"exit": SubResource("Animation_8a3fv")
+}
+
 [node name="World" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -1197,3 +1316,55 @@ position_smoothing_enabled = true
 position_smoothing_speed = 3.0
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("3_uaeot")
+
+[node name="PausedUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/PausedUI"]
+material = SubResource("ShaderMaterial_3j3qn")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PausedUI"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 60.0
+offset_top = 274.0
+offset_right = 148.0
+offset_bottom = 375.0
+grow_vertical = 2
+
+[node name="ContinueGame" type="Button" parent="UI/PausedUI/VBoxContainer"]
+layout_mode = 2
+text = "继续游戏"
+
+[node name="GameSetting" type="Button" parent="UI/PausedUI/VBoxContainer"]
+layout_mode = 2
+text = "游戏设置"
+
+[node name="BackMenu" type="Button" parent="UI/PausedUI/VBoxContainer"]
+layout_mode = 2
+text = "返回主菜单"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI"]
+libraries = {
+"": SubResource("AnimationLibrary_e6b2b")
+}
+
+[connection signal="pressed" from="UI/PausedUI/VBoxContainer/ContinueGame" to="UI" method="_on_continue_game_pressed"]
+[connection signal="pressed" from="UI/PausedUI/VBoxContainer/BackMenu" to="UI" method="_on_back_menu_pressed"]
