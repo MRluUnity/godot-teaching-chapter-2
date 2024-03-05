@@ -1344,9 +1344,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 60.0
-offset_top = 274.0
+offset_top = -50.0
 offset_right = 148.0
-offset_bottom = 375.0
+offset_bottom = 51.0
 grow_vertical = 2
 
 [node name="ContinueGame" type="Button" parent="UI/PausedUI/VBoxContainer"]

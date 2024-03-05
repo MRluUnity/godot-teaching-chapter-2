@@ -4,10 +4,12 @@ extends CharacterBody2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var collision_polygon_2d: CollisionPolygon2D = $CollisionPolygon2D
+@onready var head: RayCast2D = $CollisionPolygon2D/Head
+@onready var feet: RayCast2D = $CollisionPolygon2D/Feet
 
 
 @export var speed := 250.0
-@export var jump_speed := -300.0
+@export var jump_speed := -400.0
 @export var wall_jump_speed := Vector2(500, -350.0)
 
 
@@ -25,7 +27,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if is_on_wall_only() and not is_wall_jump:
+	if is_wall_slide() and not is_wall_jump:
 		dir = -1 if sprite_2d.flip_h else 1
 	else :
 		dir = Input.get_axis("action_left", "action_right")
@@ -37,19 +39,19 @@ func _physics_process(delta: float) -> void:
 	# 重力的变化
 	if is_wall_jump:
 		acceleration = speed / .2
-	elif not is_on_floor() and not is_on_wall_only():
+	elif not is_on_floor() and not is_wall_slide():
 		acceleration = speed / .2
 		velocity.y += gravity * delta
-	elif is_on_wall_only():
+	elif is_wall_slide():
 		velocity.y = 0
-		velocity.y += gravity * delta * .6
+		velocity.y += gravity * delta * .8
 	
 	# 跳越的情况设置
 	if Input.is_action_just_pressed("action_jump"):
 		if is_on_floor():
 			air_time = 0
 			velocity.y = jump_speed
-		elif is_on_wall_only():
+		elif is_wall_slide():
 			is_wall_jump = true
 			velocity = wall_jump_speed
 			velocity.x *= get_wall_normal().x
@@ -61,7 +63,7 @@ func _physics_process(delta: float) -> void:
 		
 	
 	# 角色的移动
-	velocity.x = move_toward(velocity.x, dir * speed, acceleration * delta) if not is_wall_jump else dir * speed
+	velocity.x = move_toward(velocity.x, dir * speed, acceleration * delta)
 	
 	# 启用 velocity 移动
 	move_and_slide()
@@ -89,8 +91,11 @@ func anim_player() -> void:
 		else :
 			animation_player.play("run")
 	else :
-		if is_on_wall_only():
+		if is_wall_slide():
 			animation_player.play("wall_slide")
 		else :
 			animation_player.play("jump")
 #endregion
+
+func is_wall_slide() -> bool:
+	return head.is_colliding() and feet.is_colliding() and is_on_wall() and not is_on_floor()
