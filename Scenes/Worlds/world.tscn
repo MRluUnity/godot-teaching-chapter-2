@@ -1187,6 +1187,51 @@ sources/0 = SubResource("TileSetAtlasSource_cdcrr")
 shader = ExtResource("3_1dwqi")
 shader_parameter/lod = 3.0
 
+[sub_resource type="Animation" id="Animation_sblsl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(60, 274)]
+}
+
+[sub_resource type="Animation" id="Animation_vdktu"]
+resource_name = "back"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(60, 274), Vector2(-120, 274)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"change_sence"
+}]
+}
+
 [sub_resource type="Animation" id="Animation_ut56u"]
 resource_name = "enter"
 length = 0.3
@@ -1217,21 +1262,6 @@ tracks/1/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_sblsl"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(60, 274)]
-}
-
 [sub_resource type="Animation" id="Animation_8a3fv"]
 resource_name = "exit"
 length = 0.3
@@ -1259,36 +1289,6 @@ tracks/1/keys = {
 "values": [{
 "args": [],
 "method": &"hide"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_vdktu"]
-resource_name = "back"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PausedUI/VBoxContainer:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(60, 274), Vector2(-120, 274)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"change_sence"
 }]
 }
 

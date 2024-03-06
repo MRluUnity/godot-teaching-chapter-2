@@ -13,11 +13,15 @@ extends CharacterBody2D
 @export var wall_jump_speed := Vector2(500, -350.0)
 
 
-var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity_normal : float = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity_wall_slide : float = gravity_normal / 50
+var gravity_fly : float = gravity_normal / 100
+var gravity : float
 var dir := 0.0
 var acceleration : float
 var is_wall_jump := false
 var air_time := 0.0
+var is_fly := false
 
 #region 虚方法
 func _ready() -> void:
@@ -37,14 +41,24 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	# 重力的变化
+	# 在进行蹬墙跳
 	if is_wall_jump:
 		acceleration = speed / .2
-	elif not is_on_floor() and not is_wall_slide():
-		acceleration = speed / .2
-		velocity.y += gravity * delta
+	# 在墙上
 	elif is_wall_slide():
-		velocity.y = 0
-		velocity.y += gravity * delta * .8
+		if velocity.y <= 0: velocity.y = 0
+		gravity = gravity_wall_slide
+		velocity.y += gravity * delta
+	# 在飞行
+	elif is_fly:
+		acceleration = speed / 2
+		gravity = gravity_fly
+		velocity.y += gravity * delta
+	# 在空中且没有开启飞行、没有在墙上
+	elif not is_on_floor():
+		acceleration = speed / .2
+		gravity = gravity_normal
+		velocity.y += gravity * delta
 	
 	# 跳越的情况设置
 	if Input.is_action_just_pressed("action_jump"):
@@ -56,11 +70,16 @@ func _physics_process(delta: float) -> void:
 			velocity = wall_jump_speed
 			velocity.x *= get_wall_normal().x
 	
+	# 滞空滑行
+	if not is_on_floor() and not is_wall_jump:
+		is_fly = true if Input.is_action_pressed("action_jump") and velocity.y >= 0 else false
+	else :
+		is_fly = false
+	
 	# 再空中的时间
-	if air_time > 0.1:
+	if air_time > .1:
 		air_time = 0
 		is_wall_jump = false
-		
 	
 	# 角色的移动
 	velocity.x = move_toward(velocity.x, dir * speed, acceleration * delta)
