@@ -1,8 +1,10 @@
 class_name HealthSystem extends Node
 
-
+signal health_is_change
 @export var max_health := 100.0
 
+func _ready() -> void:
+	health_is_change.emit(current_health / max_health * 100)
 
 @onready var current_health := max_health:
 	get:
@@ -21,11 +23,13 @@ var slow_heal_time := 0.0
 #region 恢复血量
 func heal(v : float) -> void:
 	current_health += v
+	health_is_change.emit(current_health / max_health * 100)
 #endregion
 
 #region 受伤
 func hurt(v : float) -> void:
 	current_health -= v
+	health_is_change.emit(current_health / max_health * 100)
 #endregion
 
 #region 缓慢回血

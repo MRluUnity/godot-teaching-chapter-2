@@ -1,11 +1,13 @@
 extends CharacterBody2D
 
+signal ui_update
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var collision_polygon_2d: CollisionPolygon2D = $CollisionPolygon2D
 @onready var head: RayCast2D = $CollisionPolygon2D/Head
 @onready var feet: RayCast2D = $CollisionPolygon2D/Feet
+@onready var health_system: HealthSystem = $HealthSystem
 
 
 @export var speed := 250.0
@@ -25,6 +27,7 @@ var is_fly := false
 
 #region 虚方法
 func _ready() -> void:
+	
 	air_time = 0
 	acceleration = speed / .5
 	animation_player.play("idle")
@@ -37,6 +40,7 @@ func _process(delta: float) -> void:
 		dir = Input.get_axis("action_left", "action_right")
 	is_flip()
 	anim_player()
+	is_test()
 
 
 func _physics_process(delta: float) -> void:
@@ -116,5 +120,20 @@ func anim_player() -> void:
 			animation_player.play("jump")
 #endregion
 
+#region 判断是否在墙面滑行
 func is_wall_slide() -> bool:
 	return head.is_colliding() and feet.is_colliding() and is_on_wall() and not is_on_floor()
+#endregion
+
+#region 测试UI用的
+func is_test() -> void:
+	if Input.is_action_just_pressed("test"):
+		health_system.heal(10)
+	if Input.is_action_just_pressed("test2"):
+		health_system.hurt(10)
+#endregion
+
+
+func _on_health_system_health_is_change(v : float) -> void:
+	await get_tree().create_timer(.0).timeout
+	ui_update.emit(v)

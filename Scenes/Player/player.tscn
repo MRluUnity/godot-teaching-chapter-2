@@ -308,3 +308,5 @@ autoplay = "idle"
 
 [node name="HealthSystem" type="Node" parent="."]
 script = ExtResource("4_u5ijf")
+
+[connection signal="health_is_change" from="HealthSystem" to="." method="_on_health_system_health_is_change"]

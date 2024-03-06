@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dda1be3l3tua4"]
+[gd_scene load_steps=21 format=3 uid="uid://dda1be3l3tua4"]
 
 [ext_resource type="Texture2D" uid="uid://udykbq4x7h5n" path="res://Assets/Legacy-Fantasy - High Forest 2.3/Buildings.png" id="1_qio7g"]
 [ext_resource type="PackedScene" uid="uid://cuswjqyhde34x" path="res://Scenes/Player/player.tscn" id="2_i4f1p"]
 [ext_resource type="Shader" path="res://Scenes/Shaders/grass.gdshader" id="3_1dwqi"]
 [ext_resource type="Script" path="res://Scenes/Worlds/paused_ui.gd" id="3_uaeot"]
+[ext_resource type="Texture2D" uid="uid://5usdhltf0jfb" path="res://Assets/Legacy-Fantasy - High Forest 2.3/HUD/Base-01.png" id="5_bjpds"]
+[ext_resource type="Script" path="res://Scenes/Worlds/world_hud.gd" id="5_foimf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cdcrr"]
 texture = ExtResource("1_qio7g")
@@ -1300,6 +1302,100 @@ _data = {
 "exit": SubResource("Animation_8a3fv")
 }
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lcej5"]
+texture = ExtResource("5_bjpds")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+region_rect = Rect2(307, 21, 58, 6)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bjvo8"]
+texture = ExtResource("5_bjpds")
+region_rect = Rect2(308, 86, 56, 4)
+
+[sub_resource type="Animation" id="Animation_w8h5v"]
+resource_name = "enter"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bar/HBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(476, -70), Vector2(476, 20)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_x0jls"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bar/HBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(476, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hm3kb"]
+resource_name = "exit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bar/HBoxContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(476, 20), Vector2(476, -70)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"hide"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u3nl6"]
+_data = {
+"RESET": SubResource("Animation_x0jls"),
+"enter": SubResource("Animation_w8h5v"),
+"exit": SubResource("Animation_hm3kb")
+}
+
 [node name="World" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -1318,7 +1414,10 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 
 [node name="UI" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
 process_mode = 3
+layer = 100
+visible = false
 script = ExtResource("3_uaeot")
 
 [node name="PausedUI" type="Control" parent="UI"]
@@ -1366,5 +1465,46 @@ libraries = {
 "": SubResource("AnimationLibrary_e6b2b")
 }
 
+[node name="HUD" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+layer = 10
+script = ExtResource("5_foimf")
+
+[node name="Bar" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/Bar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="HealthBar" type="ProgressBar" parent="HUD/Bar/HBoxContainer"]
+custom_minimum_size = Vector2(200, 27)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxTexture_lcej5")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bjvo8")
+value = 50.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD"]
+libraries = {
+"": SubResource("AnimationLibrary_u3nl6")
+}
+
+[connection signal="ui_update" from="Player" to="HUD" method="_on_player_ui_update"]
+[connection signal="visibility_changed" from="UI" to="HUD" method="_on_ui_visibility_changed"]
 [connection signal="pressed" from="UI/PausedUI/VBoxContainer/ContinueGame" to="UI" method="_on_continue_game_pressed"]
 [connection signal="pressed" from="UI/PausedUI/VBoxContainer/BackMenu" to="UI" method="_on_back_menu_pressed"]
