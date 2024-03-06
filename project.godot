@@ -25,6 +25,10 @@ window/size/always_on_top=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[gui]
+
+theme/custom="res://Theme/main_theme.tres"
+
 [input]
 
 action_left={

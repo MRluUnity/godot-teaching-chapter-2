@@ -6,6 +6,7 @@ extends CanvasLayer
 
 #region 虚方法
 func _ready() -> void:
+	await get_tree().create_timer(.0).timeout
 	hide()
 
 
