@@ -10,11 +10,13 @@ signal ui_update
 @onready var health_system: HealthSystem = $HealthSystem
 
 
-@export var speed := 250.0
+@export var speed_normal := 250.0
+@export var speed_sprint := 500.0
 @export var jump_speed := -400.0
 @export var wall_jump_speed := Vector2(500, -350.0)
 
 
+var speed : float
 var gravity_normal : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var gravity_wall_slide : float = gravity_normal / 50
 var gravity_fly : float = gravity_normal / 100
@@ -24,6 +26,7 @@ var acceleration : float
 var is_wall_jump := false
 var air_time := 0.0
 var is_fly := false
+var is_speint := false
 
 #region 虚方法
 func _ready() -> void:
@@ -63,6 +66,8 @@ func _physics_process(delta: float) -> void:
 		acceleration = speed / .2
 		gravity = gravity_normal
 		velocity.y += gravity * delta
+	else :
+		acceleration = speed
 	
 	# 跳越的情况设置
 	if Input.is_action_just_pressed("action_jump"):
@@ -85,8 +90,14 @@ func _physics_process(delta: float) -> void:
 		air_time = 0
 		is_wall_jump = false
 	
+	is_speint = true if Input.is_action_pressed("action_sprint") else false
+	
+	# 冲刺功能实现
+	speed = speed_sprint if is_speint else speed_normal
+		
+	
 	# 角色的移动
-	velocity.x = move_toward(velocity.x, dir * speed, acceleration * delta)
+	velocity.x = move_toward(velocity.x, dir * speed, acceleration * delta) if not is_speint else dir * speed
 	
 	# 启用 velocity 移动
 	move_and_slide()
