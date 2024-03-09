@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://r7hpita1l7td"
+path="res://.godot/imported/Godot教学2BGM - String1.wav-eceb2f2c83b5872d0e8133c906e52381.sample"
+
+[deps]
+
+source_file="res://Assets/audio/Godot教学2BGM - String1.wav"
+dest_files=["res://.godot/imported/Godot教学2BGM - String1.wav-eceb2f2c83b5872d0e8133c906e52381.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

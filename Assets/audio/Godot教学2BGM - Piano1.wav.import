@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://0lg6j71pdlsv"
+path="res://.godot/imported/Godot教学2BGM - Piano1.wav-9fe9a7012b9bb8f2a34584a6cfb05cea.sample"
+
+[deps]
+
+source_file="res://Assets/audio/Godot教学2BGM - Piano1.wav"
+dest_files=["res://.godot/imported/Godot教学2BGM - Piano1.wav-9fe9a7012b9bb8f2a34584a6cfb05cea.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

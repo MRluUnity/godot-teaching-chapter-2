@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://2f0ysb6lhda8"
+path="res://.godot/imported/Godot教学2BGM - Guitar1.wav-f2f25738061d51628db05c37441f5fe2.sample"
+
+[deps]
+
+source_file="res://Assets/audio/Godot教学2BGM - Guitar1.wav"
+dest_files=["res://.godot/imported/Godot教学2BGM - Guitar1.wav-f2f25738061d51628db05c37441f5fe2.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
